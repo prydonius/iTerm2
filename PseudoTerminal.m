@@ -480,6 +480,12 @@ NSString *sessionsKey = @"sessions";
 #endif
     terminalGuid_ = [[NSString stringWithFormat:@"pty-%@", [ProfileModel freshGuid]] retain];
 
+    // pin hotkey window (set to always on top)
+    if (isHotkey)
+    {
+        [[self window] setLevel:NSFloatingWindowLevel];
+    }
+
     return self;
 }
 
@@ -1794,7 +1800,7 @@ NSString *sessionsKey = @"sessions";
                 // Normal case
                 frame.origin.x = [screen visibleFrame].origin.x;
             }
-            
+
             if (frame.size.width > 0) {
                 [[self window] setFrame:frame display:YES];
             }
@@ -1845,6 +1851,7 @@ NSString *sessionsKey = @"sessions";
         // becomes key. Note that if a popup closes this function shouldn't
         // be called at all because it makes us key before closing itself.
         // If a popup is opening, though, we shouldn't close ourselves.
+        /* -- Never close...
         if (![[NSApp keyWindow] isKindOfClass:[PopupWindow class]] &&
             ![[[NSApp keyWindow] windowController] isKindOfClass:[ProfilesWindow class]] &&
             ![[[NSApp keyWindow] windowController] isKindOfClass:[PreferencePanel class]]) {
@@ -1854,6 +1861,7 @@ NSString *sessionsKey = @"sessions";
             }
             [[iTermController sharedInstance] hideHotKeyWindow:self];
         }
+        */
     }
     if (togglingFullScreen_) {
         PtyLog(@"windowDidResignKey returning because togglingFullScreen.");
